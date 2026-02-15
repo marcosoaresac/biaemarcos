@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Amor: Dark Neon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-color: #bb86fc;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+            color: #fff;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .header-section {
+            margin-bottom: 20px;
+        }
+
+        .start-date-label {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--neon-color);
+            opacity: 0.8;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .start-date-value {
+            font-size: 1.8em;
+            font-weight: 600;
+            text-shadow: 0 0 15px var(--neon-color);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        h1 {
+            color: #fff;
+            margin: 10px 0;
+            font-size: 2.2em;
+            font-weight: 300;
+        }
+
+        #countdown {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 30px;
+            padding: 25px 40px;
+            border-radius: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            line-height: 1.6;
+        }
+
+        .highlight-time {
+            color: var(--neon-color);
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        /* --- CONTAINER COM BORDA NEON MELHORADA --- */
+        .neon-border-box {
+            position: relative;
+            width: 85%;
+            max-width: 600px;
+            padding: 4px; 
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(153, 51, 255, 0.2);
+        }
+
+        .neon-border-box::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: conic-gradient(transparent, var(--neon-color), transparent, var(--neon-color));
+            animation: rotate 6s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .carousel-container {
+            width: 100%;
+            background-color: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        /* Overlay escuro na imagem para o neon destacar mais */
+        .carousel-slide::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0.6));
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .dot {
+            height: 8px;
+            width: 8px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            width: 25px;
+            border-radius: 10px;
+            background-color: var(--neon-color);
+            box-shadow: 0 0 10px var(--neon-color);
+        }
+
+        footer {
+            margin: 40px 0;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        /* Responsividade para celulares pequenos */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8em; }
+            .carousel-slide img { height: 300px; }
+            #countdown { padding: 15px; font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <span class="start-date-label">Desde</span>
+        <span class="start-date-value">14 de Fevereiro de 2026</span>
+    </div>
+
+    <h1>Nossa História</h1>
+    
+    <div id="countdown">Carregando momentos...</div>
+
+    <div class="neon-border-box">
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide"><img src="foto1.jpg" alt="Momento 1"></div>
+                <div class="carousel-slide"><img src="foto2.jpg" alt="Momento 2"></div>
+                <div class="carousel-slide"><img src="foto3.jpg" alt="Momento 3"></div>
+                <div class="carousel-slide"><img src="foto4.jpg" alt="Momento 4"></div>
+                <div class="carousel-slide"><img src="foto5.jpg" alt="Momento 5"></div>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </div>
+    <div style="max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.8; color: #e0e0e0; font-style: italic;">
+    <p style="font-size: 1.1em; border-left: 3px solid #bb86fc; padding-left: 20px; text-align: left;">
+        "Quem diria que dois corações que haviam decidido caminhar sozinhos encontrariam um no outro o motivo para mudar de rota? <br><br>
+        A gente não estava procurando. Mas desde aquele primeiro dia, a gente não se soltou mais. O que mais me encanta em nós é a <strong>leveza</strong>. Com você, o amor não é um peso; é um respiro. <br><br>
+        Que a nossa jornada continue assim: sincera, leve e com a certeza de que fomos o melhor encontro que o acaso já promoveu."
+    </p>
+    <footer style="margin-top: 20px; font-style: normal; font-weight: bold; color: #bb86fc;">
+        Com todo o meu amor, para sempre. 💜
+    </footer>
+    </div>
+    <footer>Feito com ❤️ por Marcos Soares</footer>
+    <script>
+        // DATA DE INÍCIO: 14/02/2026 as 21:45
+        // Mês no JS começa em 0 (Janeiro = 0, Fevereiro = 1)
+        const startDate = new Date(2026, 1, 14, 21, 45, 0); 
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            if (diff < 0) {
+                document.getElementById('countdown').innerHTML = "O nosso tempo começa em breve... 💜";
+                return;
+            }
+
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30.43);
+            const years = Math.floor(months / 12);
+
+            document.getElementById('countdown').innerHTML =
+                `Juntos há<br>` +
+                `<span class="highlight-time">${years}</span> anos • ` +
+                `<span class="highlight-time">${months % 12}</span> meses • ` +
+                `<span class="highlight-time">${days % 30}</span> dias<br>` +
+                `<span style="font-size: 0.9em; opacity: 0.7;">${hours % 24}h ${minutes % 60}m ${seconds % 60}s</span>`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // LÓGICA DO CARROSSEL
+        const track = document.getElementById('carouselTrack');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dotsContainer = document.getElementById('carouselDots');
+        let index = 0;
+
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.onclick = () => setSlide(i);
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function setSlide(i) {
+            dots[index].classList.remove('active');
+            index = i;
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots[index].classList.add('active');
+        }
+
+        setInterval(() => {
+            let next = (index + 1) % slides.length;
+            setSlide(next);
+        }, 5000); // Troca a cada 5 segundos para dar tempo de apreciar
+    </script>
+</body>
+</html>
