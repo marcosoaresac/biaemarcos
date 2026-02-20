@@ -25,9 +25,11 @@
             color: #fff;
             text-align: center;
             overflow-x: hidden;
+            cursor: pointer; /* Indica que a página é interativa */
         }
 
         .header-section {
+            margin-top: 50px;
             margin-bottom: 20px;
         }
 
@@ -75,7 +77,6 @@
             font-size: 1.3em;
         }
 
-        /* --- CONTAINER COM BORDA NEON MELHORADA --- */
         .neon-border-box {
             position: relative;
             width: 85%;
@@ -120,22 +121,15 @@
 
         .carousel-slide {
             min-width: 100%;
+            position: relative;
         }
 
         .carousel-slide img {
             width: 100%;
-            height: 400px;
+            height: 720px;
             object-fit: cover;
             display: block;
             filter: brightness(0.9) contrast(1.1);
-        }
-
-        /* Overlay escuro na imagem para o neon destacar mais */
-        .carousel-slide::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0.6));
         }
 
         .carousel-dots {
@@ -164,6 +158,30 @@
             box-shadow: 0 0 10px var(--neon-color);
         }
 
+        /* CONTROLE DE MÚSICA */
+        #music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--neon-color);
+            color: var(--neon-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-color);
+            transition: transform 0.3s ease;
+        }
+
+        #music-btn:hover {
+            transform: scale(1.1);
+        }
+
         footer {
             margin: 40px 0;
             font-size: 0.8em;
@@ -172,7 +190,6 @@
             text-transform: uppercase;
         }
 
-        /* Responsividade para celulares pequenos */
         @media (max-width: 480px) {
             h1 { font-size: 1.8em; }
             .carousel-slide img { height: 300px; }
@@ -181,6 +198,15 @@
     </style>
 </head>
 <body>
+
+    <audio id="musicaFundo" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+
+    <div id="music-btn" onclick="toggleMusic()">
+        <span id="music-icon">🔇</span>
+    </div>
 
     <div class="header-section">
         <span class="start-date-label">Desde</span>
@@ -203,20 +229,22 @@
             <div class="carousel-dots" id="carouselDots"></div>
         </div>
     </div>
+
     <div style="max-width: 600px; margin: 40px auto; padding: 20px; line-height: 1.8; color: #e0e0e0; font-style: italic;">
-    <p style="font-size: 1.1em; border-left: 3px solid #bb86fc; padding-left: 20px; text-align: left;">
-        "Quem diria que dois corações que haviam decidido caminhar sozinhos encontrariam um no outro o motivo para mudar de rota? <br><br>
-        A gente não estava procurando. Mas desde aquele primeiro dia, a gente não se soltou mais. O que mais me encanta em nós é a <strong>leveza</strong>. Com você, o amor não é um peso; é um respiro. <br><br>
-        Que a nossa jornada continue assim: sincera, leve e com a certeza de que fomos o melhor encontro que o acaso já promoveu."
-    </p>
-    <footer style="margin-top: 20px; font-style: normal; font-weight: bold; color: #bb86fc;">
-        Com todo o meu amor, para sempre. 💜
-    </footer>
+        <p style="font-size: 1.1em; border-left: 3px solid #bb86fc; padding-left: 20px; text-align: left;">
+            "Quem diria que dois corações que haviam decidido caminhar sozinhos encontrariam um no outro o motivo para mudar de rota? <br><br>
+            A gente não estava procurando. Mas desde aquele primeiro dia, a gente não se soltou mais. O que mais me encanta em nós é a <strong>leveza</strong>. Com você, o amor não é um peso; é um respiro. <br><br>
+            Que a nossa jornada continue assim: sincera, leve e com a certeza de que fomos o melhor encontro que o acaso já promoveu."
+        </p>
+        <footer style="margin-top: 20px; font-style: normal; font-weight: bold; color: #bb86fc;">
+            Com todo o meu amor, para sempre. 💜
+        </footer>
     </div>
-    <footer>Feito com ❤️ por Marcos Soares</footer>
+
+    <footer style="color: #555;">Feito com ❤️ por Marcos Soares</footer>
+
     <script>
-        // DATA DE INÍCIO: 14/02/2026 as 21:45
-        // Mês no JS começa em 0 (Janeiro = 0, Fevereiro = 1)
+        // --- CONFIGURAÇÃO DA DATA ---
         const startDate = new Date(2026, 1, 14, 21, 45, 0); 
 
         function updateCountdown() {
@@ -246,7 +274,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // LÓGICA DO CARROSSEL
+        // --- LÓGICA DO CARROSSEL ---
         const track = document.getElementById('carouselTrack');
         const slides = document.querySelectorAll('.carousel-slide');
         const dotsContainer = document.getElementById('carouselDots');
@@ -272,7 +300,33 @@
         setInterval(() => {
             let next = (index + 1) % slides.length;
             setSlide(next);
-        }, 5000); // Troca a cada 5 segundos para dar tempo de apreciar
+        }, 5000);
+
+        // --- LÓGICA DA MÚSICA ---
+        const audio = document.getElementById('musicaFundo');
+        const musicIcon = document.getElementById('music-icon');
+        let playing = false;
+
+        function toggleMusic() {
+            if (playing) {
+                audio.pause();
+                musicIcon.innerText = "🔇";
+            } else {
+                audio.play();
+                musicIcon.innerText = "🎵";
+            }
+            playing = !playing;
+        }
+
+        // Ativa o som no primeiro clique do usuário na página
+        document.body.addEventListener('click', () => {
+            if (!playing) {
+                audio.play().then(() => {
+                    playing = true;
+                    musicIcon.innerText = "🎵";
+                }).catch(e => console.log("Aguardando interação..."));
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
